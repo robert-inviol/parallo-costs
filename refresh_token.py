@@ -98,7 +98,7 @@ async def refresh_token(username, password, headless=True):
 
         # Wait for B2C page to load
         try:
-            await page.wait_for_url('**/b2clogin.com/**', timeout=15000)
+            await page.wait_for_url('**b2clogin.com**', timeout=15000)
             await asyncio.sleep(2)
             print(f"    On B2C page: {page.url[:60]}...")
 
