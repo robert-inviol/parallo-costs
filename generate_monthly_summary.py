@@ -199,8 +199,9 @@ def main():
         if existing.exists():
             with open(existing) as f:
                 data = json.load(f)
-                if data.get("source") == "azure-invoice":
-                    print(f"  {month}: Skipping (has invoice data)")
+                source = data.get("source", "")
+                if source != "parallo":
+                    print(f"  {month}: Skipping (source: {source})")
                     continue
 
         summary = generate_summary(month, monthly[month], output_dir)
