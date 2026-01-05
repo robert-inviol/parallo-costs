@@ -95,21 +95,26 @@ async def refresh_token(username, password, headless=True):
 
         # Handle B2C identity provider selection
         print("[3] Handling B2C provider selection...")
-        await asyncio.sleep(2)
 
-        # Check if we're on B2C page with provider options
-        if 'b2clogin.com' in page.url:
-            print("    On B2C page, clicking Azure Active Directory...")
+        # Wait for B2C page to load
+        try:
+            await page.wait_for_url('**/b2clogin.com/**', timeout=15000)
+            await asyncio.sleep(2)
+            print(f"    On B2C page: {page.url[:60]}...")
+
+            # Click Azure Active Directory button
             try:
-                # Try multiple selectors for Azure AD button (full name is "Azure Active Directory")
-                azure_btn = page.locator('button:has-text("Azure Active Directory"), a:has-text("Azure Active Directory"), div:has-text("Azure Active Directory")').first
-                await azure_btn.click(timeout=10000)
+                azure_btn = page.locator('button:has-text("Azure Active Directory"), a:has-text("Azure Active Directory"), div.options button:has-text("Azure")').first
+                await azure_btn.wait_for(state='visible', timeout=10000)
+                await azure_btn.click()
+                print("    Clicked Azure AD button")
                 await asyncio.sleep(3)
             except Exception as e:
                 print(f"    Could not find Azure AD button: {e}")
-                # Take screenshot for debugging
                 await page.screenshot(path='b2c_debug.png')
                 print("    Saved b2c_debug.png for debugging")
+        except Exception as e:
+            print(f"    B2C page not detected: {e}")
 
         # Wait for Microsoft login page
         print("[4] Waiting for Microsoft login...")
