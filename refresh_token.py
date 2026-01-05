@@ -81,24 +81,27 @@ async def refresh_token(username, password, headless=True):
         # Start login flow
         print("[1] Navigating to portal...")
         await page.goto('https://portal.parallo.support/')
-        await asyncio.sleep(2)
+        await asyncio.sleep(3)
+        print(f"    Current URL: {page.url[:60]}...")
 
         # Click login if needed
         try:
             login_btn = page.locator('text=Login').first
-            if await login_btn.is_visible():
+            if await login_btn.is_visible(timeout=5000):
                 print("[2] Clicking Login...")
                 await login_btn.click()
-                await asyncio.sleep(2)
-        except Exception:
-            pass
+                await asyncio.sleep(3)
+            else:
+                print("[2] No login button visible, may already be redirecting...")
+        except Exception as e:
+            print(f"[2] Login button not found: {e}")
 
         # Handle B2C identity provider selection
         print("[3] Handling B2C provider selection...")
 
         # Wait for B2C page to load
         try:
-            await page.wait_for_url('**b2clogin.com**', timeout=15000)
+            await page.wait_for_url(re.compile(r'b2clogin\.com'), timeout=15000)
             await asyncio.sleep(2)
             print(f"    On B2C page: {page.url[:60]}...")
 
