@@ -1,0 +1,17 @@
+# Config with secrets
+config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+
+# Tokens and credentials
+captured_token.txt
+*.png
+session.json
+
+# Output
+azure_costs.csv
+costs/

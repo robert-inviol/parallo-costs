@@ -1,0 +1,7 @@
+{
+  "powerbi_endpoint": "https://YOUR_CAPACITY_ID.pbidedicated.windows.net/webapi/capacities/YOUR_CAPACITY_ID/workloads/QES/QueryExecutionService/automatic/public/query",
+  "dataset_id": "YOUR_DATASET_ID",
+  "report_id": "YOUR_REPORT_ID",
+  "model_id": 0,
+  "company_id": "YOUR_COMPANY_ID"
+}
